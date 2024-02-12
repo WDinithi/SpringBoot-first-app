@@ -1,19 +1,16 @@
-package com.example.springbootapp.dto;
+package com.example.springbootapp.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
 
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity
-@Table(name = "Employee")
-public class EmployeeDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class EmployeeEntity {
     private String EmpId;
     private String EmpName;
     private String EmpAddress;
