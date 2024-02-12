@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -28,6 +29,19 @@ public class EmployeeService {
         else {
             employeeRepo.save(modelMapper.map(employeeDTO, EmployeeEntity.class));
             return VarList.RSP_SUCCESS;
+        }
+
+    }
+
+    //Update
+
+    public String updateEmployee(EmployeeDTO employeeDTO){
+        if (employeeRepo.existsById(Integer.valueOf(employeeDTO.getEmpId()))){
+            return VarList.RSP_SUCCESS;
+        }
+        else {
+            employeeRepo.save(modelMapper.map(employeeDTO, EmployeeEntity.class));
+            return VarList.RSP_NO_DATA_FOUND;
         }
     }
 }
