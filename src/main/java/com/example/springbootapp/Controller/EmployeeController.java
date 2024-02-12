@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/employee")
 public class EmployeeController {
@@ -82,6 +84,67 @@ public class EmployeeController {
             responseDTO.setMassage("Error");
             responseDTO.setContact(null);
             return new ResponseEntity(responseDTO,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/getAllEmployee")
+    public ResponseEntity getAllEmployee(){
+        try {
+            List<EmployeeDTO> employeeDTOS=employeeService.getAllEmployee();
+            responseDTO.setCode(VarList.RSP_SUCCESS);
+            responseDTO.setMassage("Success");
+            responseDTO.setContact(employeeDTOS);
+            return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
+        }
+        catch (Exception x){
+            responseDTO.setCode(VarList.RSP_ERROR);
+            responseDTO.setMassage(x.getMessage());
+            responseDTO.setContact(null);
+            return new ResponseEntity(responseDTO,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+    @GetMapping("/searchEmployee")
+    public ResponseEntity searchEmployee(@PathVariable int emp_id){
+        try {
+            EmployeeDTO employeeDTOS=employeeService.searchEmployee(emp_id);
+            responseDTO.setCode(VarList.RSP_SUCCESS);
+            responseDTO.setMassage("Success");
+            responseDTO.setContact(employeeDTOS);
+            return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
+        }
+        catch (Exception x){
+            responseDTO.setCode(VarList.RSP_ERROR);
+            responseDTO.setMassage(x.getMessage());
+            responseDTO.setContact(null);
+            return new ResponseEntity(responseDTO,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/DeleteEmployee/{emp_id}")
+    public ResponseEntity DeleteEmployee(@PathVariable int emp_id){
+        try {
+            String res = employeeService.deleteEmployee(emp_id);
+
+            if (res.equals("00")) {
+                responseDTO.setCode(VarList.RSP_SUCCESS);
+                responseDTO.setMassage("Success");
+                responseDTO.setContact(null);
+                return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
+            }else {
+                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
+                responseDTO.setMassage("No Employe this iD");
+                responseDTO.setContact(null);
+                return new ResponseEntity(responseDTO,HttpStatus.BAD_REQUEST);
+            }
+        }
+        catch (Exception x){
+            responseDTO.setCode(VarList.RSP_ERROR);
+            responseDTO.setMassage(x.getMessage());
+            responseDTO.setContact(x);
+            return new ResponseEntity(responseDTO,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
