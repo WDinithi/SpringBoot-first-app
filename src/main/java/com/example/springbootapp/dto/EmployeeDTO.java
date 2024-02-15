@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class EmployeeDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String EmpId;
+    private Long EmpId;  // Assuming EmpId is of type Long for auto-generated IDs
     private String EmpName;
     private String EmpAddress;
     private String EmpMobileNumber;

@@ -25,19 +25,28 @@ public class EmployeeService {
     private ModelMapper modelMapper;
 
     public String saveEmployee(EmployeeDTO employeeDTO) {
-        if (employeeRepo.existsById(Integer.valueOf(employeeDTO.getEmpId()))) {
-            return VarList.RSP_DUPLICATED;
-        } else {
-            employeeRepo.save(modelMapper.map(employeeDTO, EmployeeEntity.class));
-            return VarList.RSP_SUCCESS;
-        }
+        try {
+            int empId = Integer.valueOf(Math.toIntExact(employeeDTO.getEmpId()));
 
+            if (employeeRepo.existsById(empId)) {
+                return VarList.RSP_DUPLICATED;
+            } else {
+                employeeRepo.save(modelMapper.map(employeeDTO, EmployeeEntity.class));
+                return VarList.RSP_SUCCESS;
+            }
+        } catch (NumberFormatException e) {
+            // Handle the case where the conversion to Long fails
+            return VarList.RSP_NO_DATA_FOUND;
+        } catch (Exception e) {
+            // Handle other exceptions (e.g., database issues)
+            return VarList.RSP_ERROR;
+        }
     }
 
-    //Update
+            //Update
 
     public String updateEmployee(EmployeeDTO employeeDTO) {
-        if (employeeRepo.existsById(Integer.valueOf(employeeDTO.getEmpId()))) {
+        if (employeeRepo.existsById(Integer.valueOf(Math.toIntExact(employeeDTO.getEmpId())))) {
             return VarList.RSP_SUCCESS;
         } else {
             employeeRepo.save(modelMapper.map(employeeDTO, EmployeeEntity.class));
